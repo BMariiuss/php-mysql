@@ -85,7 +85,7 @@ function displayAuthor(string $authorEmail, array $users) : string
 <html>
 <head>
     <title>Affichage des recettes</title>
-    <link rel="stylesheet" type="text/css" href="AfficherRecettes.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
     <h1>Liste des recettes de cuisine</h1>
