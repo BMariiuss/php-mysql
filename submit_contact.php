@@ -25,7 +25,15 @@
 
         <!-- inclusion de l'entête du site -->
         <?php include_once('header.php'); ?>
-        
+
+        <?php
+         if (!isset($_GET['email']) || !isset($_GET['message'])){
+            echo('<h1>Il faut un email et un message pour soumettre le formulaire.</h1>');
+
+            //Arrêt l'exécution de PHP
+            return;
+        }
+        ?>
         <?php
             if (
                 (!isset($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
