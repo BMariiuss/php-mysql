@@ -1,18 +1,3 @@
-
-<?php
-try
-{
-$db = new PDO(
-'mysql:host=localhost;dbname=my_recipes;charset=utf8',
-'root',
-'root');
-}
-catch (Exception $e)
-{
-die('Erreur : ' . $e->getMessage());
-}
-?>
-
 <?php session_start(); // $_SESSION ?>
 <!DOCTYPE html>
 <html>
@@ -29,30 +14,37 @@ die('Erreur : ' . $e->getMessage());
 <body class="d-flex flex-column min-vh-100">
     <div class="container">
 
-    <!-- Navigation -->
-    <?php include_once('header.php'); ?>
+        <!-- Navigation -->
+        <?php include_once('header.php'); ?>
 
-    <!-- Inclusion des fichiers utilitaires -->
-    <?php 
-        include_once('variables.php');
-        include_once('functions.php');
-    ?>
+        <!-- Inclusion des fichiers utilitaires -->
+        <?php 
+            include_once('variables.php');
+            include_once('functions.php');
+        ?>
 
-    <!-- Inclusion du formulaire de connexion -->
-    <?php include_once('login.php'); ?>
-    
-    <h1>Site de Recettes !</h1>
+        <!-- Inclusion du formulaire de connexion -->
+        <?php include_once('login.php'); ?>
+        
+        <h1>Site de Recettes !</h1>
 
-    <!-- Si l'utilisateur existe, on affiche les recettes -->
-    <?php if(isset($_SESSION['LOGGED_USER'])): ?>
-        <?php foreach(getRecipes($recipes, 5) as $recipe) : ?>
-            <article>
-                <h3><?php echo $recipe['title']; ?></h3>
-                <div><?php echo $recipe['recipe']; ?></div>
-                <i><?php echo displayAuthor($recipe['author'], $users); ?></i>
-            </article>
-        <?php endforeach ?>
-    <?php endif; ?>
+        <!-- Si l'utilisateur existe, on affiche les recettes -->
+        <?php if(isset($_SESSION['LOGGED_USER'])): ?>
+            <!-- On se connecte à MySQL -->
+            <?php include_once('mysql.php'); ?>
+            <!-- Si tout va bien, on peut continuer -->
+            <?php
+            // On récupère tout le contenu de la table recipes
+            $sqlQuery = 'SELECT recipe FROM recipes WHERE is_enabled==1';
+            $recipesStatement = $db->prepare($sqlQuery);
+            $recipesStatement->execute();
+            $recipes = $recipesStatement->fetchAll();
+            ?>
+            <!-- On affiche chaque recette une à une -->
+            <?php foreach ($recipes as $recipe) : ?>
+            <p><?php echo $recipe['author']; ?> </p>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </div>
 
     <?php include_once('footer.php'); ?>
