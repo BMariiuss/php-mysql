@@ -35,7 +35,7 @@
             <!-- Si tout va bien, on peut continuer -->
             <?php
             // On récupère tout le contenu de la table recipes
-            $sqlQuery = 'SELECT recipe FROM recipes WHERE is_enabled==1';
+            $sqlQuery = 'SELECT * FROM recipes WHERE is_enabled=1';
             $recipesStatement = $db->prepare($sqlQuery);
             $recipesStatement->execute();
             $recipes = $recipesStatement->fetchAll();
